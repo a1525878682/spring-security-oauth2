@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liyx.auth.mapper">
+    <select id="findUserPermissions" resultType="menu">
+
+        select distinct m.perms
+        from sys_perm_group r
+                 left join sys_group_user ur on (r.group_id = ur.group_id)
+                 left join sys_user u on (u.user_id = ur.user_id)
+                 left join sys_group_menu rm on (rm.group_id = r.group_id)
+                 left join sys_menu m on (m.menu_id = rm.menu_id)
+        where u.user_name = #{userName}
+          and m.perms is not null
+          and m.perms &lt;&gt; ''
+
+
+    </select>
+</mapper>

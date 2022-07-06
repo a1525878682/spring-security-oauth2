@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liyx.auth.mapper">
+    <select id="findByName" parameterType="string" resultType="user">
+
+  SELECT
+        u.user_id ,
+        u.user_name,
+        u.real_name,
+        u.mail,
+        u.mobile,
+        u.pwd,
+        u.create_time,
+        u.dept_id deptId,
+        u.update_time lastLoginTime,
+        d.dept_name deptName,
+        u.perm_group,
+        u.user_type,
+        GROUP_CONCAT(r.group_id) roleId,
+        GROUP_CONCAT(r.group_name) roleName
+        FROM
+        sys_user u
+        LEFT JOIN sys_dept d ON (u.dept_id	= d.id)
+        LEFT JOIN sys_group_user ur ON (u.user_id = ur.user_id)
+        LEFT JOIN sys_perm_group r ON r.group_id = ur.group_id
+        WHERE  u.user_name = #{username}
+        group by u.user_name,u.user_id,u.mail,u.mobile,u.pwd, u.create_time,u.dept_id
+
+    </select>
+
+
+
+</mapper>
